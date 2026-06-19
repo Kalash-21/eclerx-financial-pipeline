@@ -1,7 +1,7 @@
 import re
 from pydantic import BaseModel, Field, field_validator, model_validator
-from typing import Optional, Any
-from datetime import date, datetime
+from typing import Optional
+from datetime import date, datetime, timezone
 from decimal import Decimal
 from enum import Enum
 from uuid import UUID, uuid4
@@ -49,7 +49,7 @@ class BaseDocumentSchema(BaseModel):
     doc_id: UUID = Field(default_factory=uuid4)
     doc_type: DocumentType
     source_filename: str
-    extracted_at: datetime = Field(default_factory=datetime.utcnow)
+    extracted_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     extraction_model: str = "gpt-4o-mini"
     extraction_confidence: Optional[float] = Field(default=None, ge=0.0, le=1.0)
 
